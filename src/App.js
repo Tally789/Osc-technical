@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+import './App.css'
+import Card from './Card';
+import Nav from './Nav';
 
-function App() {
+
+const App = () => {
+  const [data, setData ] = useState([]);
+
+    const url = "https://6221e286666291106a161556.mockapi.io/api/osc/getMockLeads/leads";
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async() => {
+       try { const response = await fetch(url);
+        const json = await response.json();
+        setData(json);
+    } catch (error) {
+      console.log(error)
+    }
+
+    console.log(data)
+  }
+    
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav />
+      {data.map(item => <Card item={item} key={item.id}/>)}
     </div>
   );
 }
