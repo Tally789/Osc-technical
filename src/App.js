@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './App.css'
 import Card from './Card';
+import Footer from './Footer';
 import Nav from './Nav';
 
 
@@ -29,7 +30,8 @@ const App = () => {
   return (
     <div className="App">
       <Nav />
-      {data.map(item => <Card item={item} key={item.id}/>)}
+      <div class="card--wrapper" >{data.map(item => <Card item={item} key={item.id}/>)}</div>
+      <Footer />
     </div>
   );
 }

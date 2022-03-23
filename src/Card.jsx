@@ -1,17 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaRegWindowClose, FaGraduationCap, FaArrowRight } from 'react-icons/fa'
 import { TiTick } from "react-icons/ti";
 import { RiArrowRightSLine, RiArrowDownSLine } from "react-icons/ri";
 import './Card.css';
 
 const Card = ({ item }) => {
+    const [img, setImg] = useState();
+
+    const mountedRef = useRef(true); 
+
+    useEffect(() =>{
+        const image = new Image ();
+        image.src = item.avatar;
+        image.onload = () => {
+            setTimeout(() => {
+                if (mountedRef.current){
+                setImg(image)
+                }
+            }, 400);
+        }
+        return () => {
+            // When the component unmounts 
+      mountedRef.current = false;
+        }})
+
+
     return (
+
         <div className='card__row'>
-            <div className="card__container">
+            {
+                img ? (
+                    <>
+                 <div className="card__container">
                     <div className="card__background1" >
                         <div className="close__icon iconx"><FaRegWindowClose /></div>
                         <div className="img__wrapper">
-                            <img src={item.avatar} alt="" className='avatar'/>
+                            <img 
+                            src={img.src} 
+                            alt="" 
+                            className='avatar' />
                             <span className="avatat__icon "><TiTick fill='#ce3566'/></span>
                         </div>
                         <h3 className="name">{item.name}</h3>
@@ -71,7 +98,12 @@ const Card = ({ item }) => {
                                 </div>
                             </div>
                     </div>
-            </div>
+                </div>
+                    </>
+                ) : (
+                    <div className="card__skeleton"></div>
+                )
+            }
         </div>
     );
 }
